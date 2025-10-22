@@ -58,6 +58,7 @@
 ### [Ejemplos](UD2/Ejemplos)
 * [Lectura y escritura de cookies](UD2/Ejemplos/cookies.php)
 * [Lectura y escritura de cookies en arrays](UD2/Ejemplos/cookies_arrays.php)
+* [Lectura, escritura y borrado de sesiones](UD2/Ejemplos/sesiones.php)
 
 
 ### [Ejercicios](UD2/Ejercicios)

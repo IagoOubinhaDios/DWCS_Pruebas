@@ -3,3 +3,5 @@
 ## Cookies
 * [Lectura y escritura de cookies](cookies.php)
 * [Lectura y escritura de cookies correspondientes a un array](cookies_arrays.php)
+## Sesiones
+* [Lectura, escritura y borrado de sesiones](sesiones.php)
