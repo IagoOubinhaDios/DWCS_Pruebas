@@ -10,7 +10,7 @@ CREATE TABLE ROL(
 CREATE TABLE USUARIO(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     contrasena CHAR(60) NOT NULL,
     rol_id INT NOT NULL,
     CONSTRAINT fk_usuario_rol FOREIGN KEY (rol_id) REFERENCES ROL(id)
@@ -48,3 +48,6 @@ CREATE TABLE ROL_PERMISO(
 );
 
 
+INSERT INTO ROL (id, nombre) VALUES (NULL, 'Jefe');
+INSERT INTO ROL (id, nombre) VALUES (NULL, 'Responsable');
+INSERT INTO ROL (id, nombre) VALUES (NULL, 'Programador');

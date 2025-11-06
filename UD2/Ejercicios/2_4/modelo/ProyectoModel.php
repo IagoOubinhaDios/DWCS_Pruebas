@@ -57,7 +57,7 @@ class ProyectoModel extends Model{
                     WHERE 1=1";
             
             $db = parent::getConnection();
-            $stmt = $db->prepare($sql);
+            
 
             if($nombre !== null){
                 $sql .= " AND nombre LIKE :nombre";

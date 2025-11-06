@@ -1,3 +1,48 @@
+<?php
+// require_once "modelo/UsuarioModel.php";
+require_once "modelo/RolModel.php";
+//Cuando entra por POST con datos de formulario
+if($_SERVER['REQUEST_METHOD']=='POST'){
+    $nombre = $_POST['nombre'] ?? '';
+    $mail = $_POST['mail'] ?? '';
+    $contrasena = $_POST['contrasena'] ?? '';
+    $contrasena2 = $_POST['contrasena2'] ?? '';
+    $idRol = $_POST['rol'] ?? '';
+    $error = [];
+
+    //Comprobaciones 
+    if(empty($nombre)){
+        $error[] = "Nombre obligatorio";
+    }
+    if(empty($mail)){
+        $error[] = "Correo obligatorio";
+    }
+    if(empty($contrasena)){
+        $error[] = "Contraseña obligatorio";
+    }
+    if(empty($contrasena2)){
+        $error[] = "Es necesario introducir la segunda contraseña";
+    }
+    if(empty($idRol)){
+        $error[] = "Es necesario seleccionar un rol";
+    }
+
+    if($contrasena !== $contrasena2){
+        $error[] = "Las contraseñas no coinciden.";
+    }
+
+    if(count($error)==0){
+        $usuario = new Usuario();
+        $usuario->rol_id = $idRol;
+        $usuario->nombre = $nombre;
+        $usuario->email = $mail;
+        $usuario->contrasena = $contrasena;
+        if(!UsuarioModel::addUsuario($usuario)){
+            $error[] = "Se ha producido un error registrando el usuario. Por favor, contacte con el servicio técnico.";
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -19,7 +64,13 @@
         <label for="rol">Rol</label><br>
         <!-- Esto tiene que ser dinámico -->
         <select name="rol">
-            <option value="id">nombre_rol</option>
+            <?php
+            $roles = RolModel::getRoles();
+            foreach($roles as $r){
+                echo "<option value='",$r->id,"'>",$r->nombre,"</option>";
+            }
+            ?>
+            
         </select><br>
 
         <label for="contrasena">Contraseña</label><br>

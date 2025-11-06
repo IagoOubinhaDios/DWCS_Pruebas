@@ -7,7 +7,6 @@ class Model{
     protected static function getConnection(){
         try {
             $db = new PDO(self::BD_DSN, self::BD_USER, self::BD_PASS);
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $db;
         } catch (PDOException $th) {
             die($th->getMessage());
