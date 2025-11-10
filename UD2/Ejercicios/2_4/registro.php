@@ -1,8 +1,8 @@
 <?php
-// require_once "modelo/UsuarioModel.php";
+require_once "modelo/UsuarioModel.php";
 require_once "modelo/RolModel.php";
 //Cuando entra por POST con datos de formulario
-if($_SERVER['REQUEST_METHOD']=='POST'){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'] ?? '';
     $mail = $_POST['mail'] ?? '';
     $contrasena = $_POST['contrasena'] ?? '';
@@ -11,35 +11,39 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $error = [];
 
     //Comprobaciones 
-    if(empty($nombre)){
+    if (empty($nombre)) {
         $error[] = "Nombre obligatorio";
     }
-    if(empty($mail)){
+    if (empty($mail)) {
         $error[] = "Correo obligatorio";
     }
-    if(empty($contrasena)){
+    if (empty($contrasena)) {
         $error[] = "Contraseña obligatorio";
     }
-    if(empty($contrasena2)){
+    if (empty($contrasena2)) {
         $error[] = "Es necesario introducir la segunda contraseña";
     }
-    if(empty($idRol)){
+    if (empty($idRol)) {
         $error[] = "Es necesario seleccionar un rol";
     }
 
-    if($contrasena !== $contrasena2){
+    if ($contrasena !== $contrasena2) {
         $error[] = "Las contraseñas no coinciden.";
     }
 
-    if(count($error)==0){
+    if (count($error) == 0) {
         $usuario = new Usuario();
         $usuario->rol_id = $idRol;
         $usuario->nombre = $nombre;
         $usuario->email = $mail;
         $usuario->contrasena = $contrasena;
-        if(!UsuarioModel::addUsuario($usuario)){
+        if (!UsuarioModel::addUsuario($usuario)) {
             $error[] = "Se ha producido un error registrando el usuario. Por favor, contacte con el servicio técnico.";
+        } else {
+            header("Location: login.php");
+            exit;
         }
+
     }
 }
 ?>
@@ -66,23 +70,34 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         <select name="rol">
             <?php
             $roles = RolModel::getRoles();
-            foreach($roles as $r){
-                echo "<option value='",$r->id,"'>",$r->nombre,"</option>";
+            foreach ($roles as $r) {
+                echo "<option value='", $r->id, "'>", $r->nombre, "</option>";
             }
             ?>
-            
+
         </select><br>
 
         <label for="contrasena">Contraseña</label><br>
         <input type="password" name="contrasena" required><br>
-        
+
         <label for="contrasena2">Repita la contraseña</label><br>
         <input type="password" name="contrasena2" required><br>
-        <!-- Aqui los errores (si los hay) -->
-        
-        <button type="submit">Guardar</button>        
+
+
+        <button type="submit">Guardar</button>
 
     </form>
+    <?php
+    if (isset($error) && count($error) > 0) {
+        echo "<div style= 'color:red;'><ul>";
+        foreach ($error as $e) {
+            echo "<li>$e</li>";
+        }
+        echo "</ul></div>";
+
+    }
+    ?>
+    <a href="login.php">Login</a>
 </body>
 
 </html>

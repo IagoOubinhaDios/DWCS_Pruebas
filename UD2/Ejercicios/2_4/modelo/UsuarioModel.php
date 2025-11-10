@@ -66,7 +66,7 @@ class UsuarioModel extends Model
 
 
             if ($nombre !== null) {
-                $sql .= " AND nombre LIKE :nombre";
+                $sql .= " AND nombre LIKE :nombre"; 
             }
 
             if ($rol_id !== null) {
@@ -122,7 +122,7 @@ class UsuarioModel extends Model
     { 
         $db = null;
         $toret = false;
-        $usr->contrasena = password_hash($usr->contrasena);
+        $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
             $sql = "INSERT INTO USUARIO (nombre, email, rol_id, contrasena) 
                     VALUES (:nombre, :email, :rol_id, :contrasena)";
@@ -182,7 +182,7 @@ class UsuarioModel extends Model
     {
         $db = null;
         $toret = false;
-        $usr->contrasena = password_hash($usr->contrasena);
+        $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
             $sql = "UPDATE USUARIO 
                     SET contrasena = :contrasena
