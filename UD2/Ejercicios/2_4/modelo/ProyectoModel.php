@@ -1,7 +1,7 @@
 <?php
 require_once "Model.php";
 
-class Proyecto{
+class Permiso{
     public $id;
     public $nombre;
     public $descripcion;
@@ -10,7 +10,7 @@ class Proyecto{
 
 class ProyectoModel extends Model{
 
-    public static function getProyecto(int $id): Proyecto|null{
+    public static function getProyecto(int $id): Permiso|null{
         $db = null;
         $p = null;
         try {
@@ -30,7 +30,7 @@ class ProyectoModel extends Model{
                 return null;
             }
 
-            $p = new Proyecto();
+            $p = new Permiso();
             $p->id = $row["id"];
             $p->nombre = $row["nombre"];
             $p->descripcion = $row["descripcion"];
@@ -83,7 +83,7 @@ class ProyectoModel extends Model{
             
 
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                $p = new Proyecto();
+                $p = new Permiso();
                 $p->id = $row["id"];
                 $p->nombre = $row["nombre"];
                 $p->descripcion = $row["descripcion"];
@@ -103,7 +103,7 @@ class ProyectoModel extends Model{
         return $lista;
     }
 
-    public static function addProyecto(Proyecto $proy): bool{
+    public static function addProyecto(Permiso $proy): bool{
         $db = null;
         $toret = false;
         try {
@@ -121,7 +121,6 @@ class ProyectoModel extends Model{
 
         } catch (PDOException $e) {
             error_log("Error en addProyecto: " . $e->getMessage());
-            
         } finally {
             $db = null;
         }
@@ -129,7 +128,7 @@ class ProyectoModel extends Model{
         return $toret;
     }
 
-    public static function updateProyecto(Proyecto $proy): bool{
+    public static function updateProyecto(Permiso $proy): bool{
         $db = null;
         $toret = false;
         try {

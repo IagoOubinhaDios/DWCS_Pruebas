@@ -1,6 +1,6 @@
 <?php
 class Model{
-    private const BD_DSN = "mysql:host=mariadb;dbname=e_24";
+    private const BD_DSN = "mysql:host=mariadb;dbname=act2_4";
     private const BD_USER = "root";
     private const BD_PASS = "bitnami";
 

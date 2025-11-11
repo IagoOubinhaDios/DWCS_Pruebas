@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once "modelo/PermisoModel.php";
 class UserNotLogedException extends Exception
 {
     public function __construct($message='', $code = 255, ?Throwable $previous = null) {
@@ -30,11 +30,13 @@ class ControAcceso{
      * @param string $page
      * @return void
      */
-    public static function hasAccessCurrentUser(string $page){
+    public static function hasAccessCurrentUser(string $page):bool{
         $access = false;
         if(isset($_SESSION['current_user'])){
             $usuario = $_SESSION['current_user'];
-            //TODO Consultar en la base de de datos si el rol del usuario actual tiene permisos para acceder a esa pagina.
+            if(PermisoModel::getPermisoRol($usuario->rol_id, $page) != null){
+                $access = true;
+            }
         }
         return $access;
     }

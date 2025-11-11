@@ -18,7 +18,7 @@ class UsuarioModel extends Model
         $db = null;
         $p = null;
         try {
-            $sql = "SELECT id, nombre, email, rol_id, contrasena
+            $sql = "SELECT id, nombre, mail, id_rol, pass
                     FROM USUARIO 
                     WHERE id = :id";
 
@@ -37,9 +37,9 @@ class UsuarioModel extends Model
             $p = new Usuario();
             $p->id = $row["id"];
             $p->nombre = $row["nombre"];
-            $p->email = $row["email"];
-            $p->rol_id = $row["rol_id"];
-            $p->contrasena = $row["contrasena"];
+            $p->email = $row["mail"];
+            $p->rol_id = $row["id_rol"];
+            $p->contrasena = $row["pass"];
 
 
 
@@ -58,7 +58,7 @@ class UsuarioModel extends Model
         $db = null;
         $lista = [];
         try {
-            $sql = "SELECT id, nombre, email, rol_id, contrasena
+            $sql = "SELECT id, nombre, mail, id_rol, pass
                     FROM USUARIO 
                     WHERE 1=1";
 
@@ -70,11 +70,11 @@ class UsuarioModel extends Model
             }
 
             if ($rol_id !== null) {
-                $sql .= " AND rol_id = :rol_id";
+                $sql .= " AND id_rol = :rol_id";
             }
 
             if ($email !== null) {
-                $sql .= " AND email LIKE :email";
+                $sql .= " AND mail LIKE :email";
             }
 
             // Repreparar con SQL final
@@ -100,9 +100,9 @@ class UsuarioModel extends Model
                 $p = new Usuario();
                 $p->id = $row["id"];
                 $p->nombre = $row["nombre"];
-                $p->email = $row["email"];
-                $p->rol_id = $row["rol_id"];
-                $p->contrasena = $row["contrasena"];
+                $p->email = $row["mail"];
+                $p->rol_id = $row["id_rol"];
+                $p->contrasena = $row["pass"];
 
                 $lista[] = $p;
             }
@@ -124,7 +124,7 @@ class UsuarioModel extends Model
         $toret = false;
         $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
-            $sql = "INSERT INTO USUARIO (nombre, email, rol_id, contrasena) 
+            $sql = "INSERT INTO USUARIO (nombre, mail, id_rol, pass) 
                     VALUES (:nombre, :email, :rol_id, :contrasena)";
 
             $db = parent::getConnection();
@@ -154,7 +154,7 @@ class UsuarioModel extends Model
         $toret = false;
         try {
             $sql = "UPDATE USUARIO 
-                    SET nombre = :nombre, email = :email, rol_id = :rol_id
+                    SET nombre = :nombre, mail = :email, id_rol = :rol_id
                     WHERE id = :id";
 
             $db = parent::getConnection();
@@ -185,7 +185,7 @@ class UsuarioModel extends Model
         $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
             $sql = "UPDATE USUARIO 
-                    SET contrasena = :contrasena
+                    SET pass = :contrasena
                     WHERE id = :id";
 
             $db = parent::getConnection();
