@@ -47,7 +47,18 @@ CREATE TABLE ROL_PERMISO(
 
 );
 
+INSERT INTO `ROL` (id, nombre) VALUES (NULL, 'Jefe');
+INSERT INTO `ROL` (id, nombre) VALUES (NULL, 'Responsable');
+INSERT INTO `ROL` (id, nombre) VALUES (NULL, 'Programador');
 
-INSERT INTO ROL (id, nombre) VALUES (NULL, 'Jefe');
-INSERT INTO ROL (id, nombre) VALUES (NULL, 'Responsable');
-INSERT INTO ROL (id, nombre) VALUES (NULL, 'Programador');
+INSERT INTO `PERMISO`(`id`, `pagina`) VALUES (1,'ver_proyectos');
+INSERT INTO `PERMISO`(`id`, `pagina`) VALUES (2,'editar_proyectos');
+INSERT INTO `PERMISO`(`id`, `pagina`) VALUES (3,'administrar_proyectos');
+INSERT INTO `PERMISO`(`id`, `pagina`) VALUES (4,'editar_proyecto');
+INSERT INTO `PERMISO`(`id`, `pagina`) VALUES (5,'crear_proyecto');
+
+INSERT INTO `ROL_PERMISO`(`rol_id`, `permiso_id`) VALUES (1, 3);
+INSERT INTO `ROL_PERMISO`(`rol_id`, `permiso_id`) VALUES (1, 5);
+INSERT INTO `ROL_PERMISO`(`rol_id`, `permiso_id`) VALUES (2, 2);
+INSERT INTO `ROL_PERMISO`(`rol_id`, `permiso_id`) VALUES (2, 4);
+INSERT INTO `ROL_PERMISO`(`rol_id`, `permiso_id`) VALUES (3, 1);

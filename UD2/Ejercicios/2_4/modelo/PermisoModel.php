@@ -8,39 +8,32 @@ class Permiso{
 
 class PermisoModel extends Model{
 
-    public static function getPermisoRol(Rol $rol, $pagina): Permiso|null{
+    public static function getPermisoRol($rol_id, $pagina): bool{
         $db = null;
-        $p = null;
+        $toret = false;
         try {
-            $sql = "SELECT p.id, p.pagina 
-                    FROM PERMISO p INNER JOIN PERMISO_ROL pr ON p.id = pr.id_permiso
-                    WHERE pr.id_rol = :id AND p.pagina=:pagina";
-            
+            $sql = "SELECT *
+                    FROM ROL_PERMISO rp
+                    INNER JOIN PERMISO p ON p.id = rp.permiso_id
+                    WHERE rp.rol_id = :rol_id AND p.pagina LIKE :pagina";
+
             $db = parent::getConnection();
             $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':id', $rol->id, PDO::PARAM_INT);
+            $stmt->bindValue(':rol_id', $rol_id, PDO::PARAM_INT);
             $stmt->bindValue(':pagina', $pagina, PDO::PARAM_STR);
-            $stmt->execute();
-
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if(!$row){
-                return null;
-            }
-
-            $p = new Permiso();
-            $p->id = $row["id"];
-            $p->pagina = $row["pagina"];
+            $toret = $stmt->execute();
+            $toret = $stmt->fetch() ? true : false;
+            $stmt->closeCursor();
 
         } catch (PDOException $e) {
-            error_log("Error en getPermiso: " . $e->getMessage());
-            return null;
+            error_log("Error en updateRol: " . $e->getMessage());
+
         } finally {
             $db = null;
         }
 
-        return $p;
+        return $toret;
     }
 
     public static function getPermiso(int $id): Permiso|null{

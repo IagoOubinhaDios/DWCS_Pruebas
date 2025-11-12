@@ -1,5 +1,6 @@
 <?php
 require_once "Model.php";
+require_once "ProyectoModel.php";
 
 class Usuario
 {
@@ -18,7 +19,7 @@ class UsuarioModel extends Model
         $db = null;
         $p = null;
         try {
-            $sql = "SELECT id, nombre, mail, id_rol, pass
+            $sql = "SELECT id, nombre, email, rol_id, contrasena
                     FROM USUARIO 
                     WHERE id = :id";
 
@@ -37,9 +38,9 @@ class UsuarioModel extends Model
             $p = new Usuario();
             $p->id = $row["id"];
             $p->nombre = $row["nombre"];
-            $p->email = $row["mail"];
-            $p->rol_id = $row["id_rol"];
-            $p->contrasena = $row["pass"];
+            $p->email = $row["email"];
+            $p->rol_id = $row["rol_id"];
+            $p->contrasena = $row["contrasena"];
 
 
 
@@ -58,7 +59,7 @@ class UsuarioModel extends Model
         $db = null;
         $lista = [];
         try {
-            $sql = "SELECT id, nombre, mail, id_rol, pass
+            $sql = "SELECT id, nombre, email, rol_id, contrasena
                     FROM USUARIO 
                     WHERE 1=1";
 
@@ -66,15 +67,15 @@ class UsuarioModel extends Model
 
 
             if ($nombre !== null) {
-                $sql .= " AND nombre LIKE :nombre"; 
+                $sql .= " AND nombre LIKE :nombre";
             }
 
             if ($rol_id !== null) {
-                $sql .= " AND id_rol = :rol_id";
+                $sql .= " AND rol_id = :rol_id";
             }
 
             if ($email !== null) {
-                $sql .= " AND mail LIKE :email";
+                $sql .= " AND email LIKE :email";
             }
 
             // Repreparar con SQL final
@@ -100,9 +101,9 @@ class UsuarioModel extends Model
                 $p = new Usuario();
                 $p->id = $row["id"];
                 $p->nombre = $row["nombre"];
-                $p->email = $row["mail"];
-                $p->rol_id = $row["id_rol"];
-                $p->contrasena = $row["pass"];
+                $p->email = $row["email"];
+                $p->rol_id = $row["rol_id"];
+                $p->contrasena = $row["contrasena"];
 
                 $lista[] = $p;
             }
@@ -119,12 +120,12 @@ class UsuarioModel extends Model
     }
 
     public static function addUsuario(Usuario $usr): bool
-    { 
+    {
         $db = null;
         $toret = false;
         $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
-            $sql = "INSERT INTO USUARIO (nombre, mail, id_rol, pass) 
+            $sql = "INSERT INTO USUARIO (nombre, email, rol_id, contrasena) 
                     VALUES (:nombre, :email, :rol_id, :contrasena)";
 
             $db = parent::getConnection();
@@ -154,7 +155,7 @@ class UsuarioModel extends Model
         $toret = false;
         try {
             $sql = "UPDATE USUARIO 
-                    SET nombre = :nombre, mail = :email, id_rol = :rol_id
+                    SET nombre = :nombre, email = :email, rol_id = :rol_id
                     WHERE id = :id";
 
             $db = parent::getConnection();
@@ -185,7 +186,7 @@ class UsuarioModel extends Model
         $usr->contrasena = password_hash($usr->contrasena, PASSWORD_DEFAULT);
         try {
             $sql = "UPDATE USUARIO 
-                    SET pass = :contrasena
+                    SET contrasena = :contrasena
                     WHERE id = :id";
 
             $db = parent::getConnection();
@@ -205,6 +206,39 @@ class UsuarioModel extends Model
         }
 
         return $toret;
+    }
+
+    public static function getProgramadoresProyecto($id_proyecto)
+    {
+        $db = null;
+        $lista = [];
+        try {
+            $sql = "SELECT u.nombre AS nombre, u.id AS id, pp.proyecto_id AS proyecto_id
+                    FROM USUARIO u
+                    LEFT JOIN PROGRAMADOR_PROYECTO pp ON u.id = pp.usuario_id AND pp.proyecto_id = :proyecto_id
+                    WHERE u.rol_id = 3";
+
+            $db = parent::getConnection();
+            
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':proyecto_id', $id_proyecto, PDO::PARAM_INT);
+            $stmt->execute();
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $p = new Usuario();
+                $p->id = $row["id"];
+                $p->nombre = $row["nombre"];
+                $p->rol_id = $row["proyecto_id"];
+                $lista[] = $p;
+            }
+
+        } catch (PDOException $e) {
+            error_log("Error en getUsuarios: " . $e->getMessage());
+        } finally {
+            $db = null;
+        }
+
+        return $lista;
     }
 
 }

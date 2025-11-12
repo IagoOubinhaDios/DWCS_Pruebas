@@ -24,10 +24,10 @@ class ProgramadorProyecto extends Usuario
 <body>
     Programadores del proyecto 1<br>
     <?php
-    // $programadores = getProgramadoresProyecto(1);
-    // foreach($programadores as $p){
-    //     echo "<input name='programadores_asignados[]' type='checkbox' value=",$p->id," ",isset($p->proyecto_id)?'checked':'',">", $p->nombre, '<br>';
-    // }
+    /*$programadores = getProgramadoresProyecto(1);
+    foreach ($programadores as $p) {
+        echo "<input name='programadores_asignados[]' type='checkbox' value=", $p->id, " ", isset($p->proyecto_id) ? 'checked' : '', ">", $p->nombre, '<br>';
+    }*/
 
     /*
         CONSULTA

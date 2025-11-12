@@ -3,6 +3,7 @@ require_once "modelo/UsuarioModel.php";
 require_once "modelo/RolModel.php";
 require_once "control_acceso.php";
 session_start();
+
 //Cuando entra por POST con datos de formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mail = $_POST['mail'] ?? '';
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if(password_verify($contrasena, $usuario->contrasena)){
                 //Login correcto
                 $_SESSION['current_user'] = $usuario;
-                ControAcceso::redirectPaginaProyectos();
+                ControlAcceso::redirectPaginaProyectos();
                 exit;
             }
         }else{

@@ -1,19 +1,25 @@
 <?php
 require_once "modelo/PermisoModel.php";
+require_once "modelo/UsuarioModel.php";
+session_start();
 class UserNotLogedException extends Exception
 {
-    public function __construct($message='', $code = 255, ?Throwable $previous = null) {
-        $message = 'No hay usuario registrado en $_SESSION["user"]. '.$message;
+    public function __construct($message = '', $code = 255, ?Throwable $previous = null)
+    {
+        $message = 'No hay usuario registrado en $_SESSION["user"]. ' . $message;
         parent::__construct($message, $code, $previous);
     }
 
-    public function __toStrin() {
+    public function __toStrin()
+    {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
 
-    
+
 }
-class ControAcceso{
+
+class ControlAcceso
+{
     //Vista proyectos del programador
     public const string PAGE_VER_PROYECTOS = "ver_proyectos";
     //Vista proyectos del RP.
@@ -23,31 +29,39 @@ class ControAcceso{
     //Vista proyectos del jefe
     public const string PAGE_ADMINISTRAR_PROYECTOS = "administrar_proyectos";
 
-    public const string PAGE_CREAR_PROYECTO = "crear_proyecto"; 
+    public const string PAGE_CREAR_PROYECTO = "crear_proyecto";
 
     /**
      * Determina si el usuario logueado tiene acceso a la página indicada.
      * @param string $page
-     * @return void
+     * @throws \UserNotLogedException Si no existe una sesión para el usuario.
+     * @return bool
      */
-    public static function hasAccessCurrentUser(string $page):bool{
+    public static function hasAccessCurrentUser(string $page):bool
+    {
         $access = false;
-        if(isset($_SESSION['current_user'])){
-            $usuario = $_SESSION['current_user'];
-            if(PermisoModel::getPermisoRol($usuario->rol_id, $page) != null){
-                $access = true;
-            }
+
+        if (!isset($_SESSION['current_user'])) {
+            throw new UserNotLogedException();
         }
+        $usuario = $_SESSION['current_user'];
+        $rol_id = $usuario->rol_id;
+        $access = PermisoModel::getPermisoRol($rol_id, $page);
+
         return $access;
     }
 
-    public static function redirectPaginaProyectos(){
-        $pagina = self::PAGE_VER_PROYECTOS.'.php';
-        if($_SESSION['current_user']->rol_id == 1){
-            $pagina = self::PAGE_ADMINISTRAR_PROYECTOS.'.php';
+    public static function redirectPaginaProyectos()
+    {
+        $pagina = self::PAGE_VER_PROYECTOS . '.php';
+        if ($_SESSION['current_user']->rol_id == 1) {
+            $pagina = self::PAGE_ADMINISTRAR_PROYECTOS . '.php';
         }
-        if($_SESSION['current_user']->rol_id == 2){
-            $pagina = self::PAGE_EDITAR_PROYECTOS.'.php';
+        if ($_SESSION['current_user']->rol_id == 2) {
+            $pagina = self::PAGE_EDITAR_PROYECTOS . '.php';
+        }
+        if ($_SESSION['current_user']->rol_id == 3) {
+            $pagina = self::PAGE_VER_PROYECTOS . '.php';
         }
 
         header("Location: $pagina");
