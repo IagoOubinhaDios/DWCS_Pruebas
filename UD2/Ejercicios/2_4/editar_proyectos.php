@@ -13,6 +13,13 @@ try {
     header("Location: login.php");
     exit;
 }
+
+if (isset($_GET["editar"])){
+    $id = $_GET["editar"];
+    setcookie("id_proyecto", $id, time()+1000);
+    header("Location: editar_proyecto.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -34,15 +41,7 @@ try {
             echo "<label>", $p->nombre, "</label><br>";
             echo "<label>Responsable: ", $usuario->nombre, "</label><br>";
             echo "<textarea>", $p->descripcion, "</textarea><br>";
-            echo '<a href="editar_proyecto"></a>';
-            // echo "<label>Programadores</label>";
-            // echo '<form action="" method="post">';
-            // $programadores = UsuarioModel::getProgramadoresProyecto($p->id);
-            // foreach ($programadores as $pr) {
-            //     echo "<input name='programadores_asignados[]' type='checkbox' value=", $pr->id, " ", 
-            //     $pr->rol_id == $p->id? 'checked' : '', ">", $pr->nombre, '<br>';
-            // }
-            // echo '</form>';
+            echo '<a href="?editar=', $p->id ,'">Editar</a><br>';
         }
     }
     ?>

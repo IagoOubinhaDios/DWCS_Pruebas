@@ -11,6 +11,10 @@ class Usuario
     public $rol_id;
 }
 
+class ProgramadorProyecto extends Usuario{
+    public $proyecto_id;
+}
+
 class UsuarioModel extends Model
 {
 
@@ -225,10 +229,10 @@ class UsuarioModel extends Model
             $stmt->execute();
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $p = new Usuario();
+                $p = new ProgramadorProyecto();
                 $p->id = $row["id"];
                 $p->nombre = $row["nombre"];
-                $p->rol_id = $row["proyecto_id"];
+                $p->proyecto_id = $row["proyecto_id"];
                 $lista[] = $p;
             }
 
