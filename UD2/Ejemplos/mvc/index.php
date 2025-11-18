@@ -3,7 +3,7 @@ require_once "globals.php";
 
 $controller = $_REQUEST['controller'] ?? "ErrorController";
 try {
-    require_once $_SERVER['DOCUMENT_ROOT']."/Ejemplos/mvc/controller.php";
+    require_once CONTROLLER_PATH.$controller.".php";
     $objeto = new $controller();
     $action = $_REQUEST['action'] ?? 'pageNotFound';
 } catch (\Throwable $th) {

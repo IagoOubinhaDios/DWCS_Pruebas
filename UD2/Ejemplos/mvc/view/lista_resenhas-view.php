@@ -8,20 +8,22 @@
 </head>
 
 <body>
-    <h1>Listado de Artículos</h1>
+    <h1>Listado de Reseñas</h1>
     <table>
         <tr>
-            <th>Fecha</th>
-            <th>Titulo</th>
+            <th>Artículo</th>
+            <th>Descripción</th>
+            <th>Fecha y hora</th>
         </tr>
         <?php
         require_once $_SERVER['DOCUMENT_ROOT']."/Ejemplos/mvc/globals.php";
-        require_once MODEL_PATH."ArticuloModel.php";
-        $data = ArticuloModel::getArticulos();
+        require_once MODEL_PATH."ResenhaModel.php";
+        $data = ResenhaModel::getResenhas();
         foreach ($data as $row) {
             echo '<tr>';
-            echo '<td>', $row['fecha'], '</td>';
             echo '<td>', $row['titulo'], '</td>';
+            echo '<td>', $row['descripcion'], '</td>';
+            echo '<td>', $row['fecha_hora'] ?? 'No especificado', '</td>';
             echo '</tr>';
         }
         ?>

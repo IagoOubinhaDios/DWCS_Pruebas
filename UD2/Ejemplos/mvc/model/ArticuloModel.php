@@ -32,4 +32,34 @@ class ArticuloModel
         
         return $arr;
     }
+
+    public static function getArticulo($cod_articulo):String{
+        $db = null;
+        $p = null;
+        try {
+            $sql = "SELECT titulo FROM articulo WHERE cod_articulo=:cod_articulo";
+            
+            $db = self::getConnection();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':cod_articulo', $cod_articulo, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if(!$row){
+                return null;
+            } else{
+                $arr = $row['titulo'];
+            }
+
+        } catch (PDOException $e) {
+            error_log("Error en getProyecto: " . $e->getMessage());
+            return null;
+        } finally {
+            $db = null;
+        }
+
+        return $arr;
+    }
 }
